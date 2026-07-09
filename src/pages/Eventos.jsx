@@ -23,6 +23,9 @@ function Eventos() {
   const [nombre, setNombre] = useState("");
   const [fecha, setFecha] = useState("");
   const [lugar, setLugar] = useState("");
+  // Datos de edición
+  const [editando, setEditando] = useState(false);
+  const [eventoEditando, setEventoEditando] = useState(null);
 
   // Agregar un nuevo evento
   const agregarEvento = () => {
@@ -55,6 +58,41 @@ function Eventos() {
 
     setEventos(eventosActualizados);
   };
+  
+  //Editar Evento
+  const editarEvento = (evento) => {
+    setEditando(true);
+    setEventoEditando(evento);
+
+    setNombre(evento.nombre);
+    setFecha(evento.fecha);
+    setLugar(evento.lugar);
+  };
+  
+  //Actualizar Evento
+  const actualizarEvento = () => {
+
+    const eventosActualizados = eventos.map((evento) =>
+      evento.id === eventoEditando.id
+        ? {
+            ...evento,
+            nombre,
+            fecha,
+            lugar,
+          }
+        : evento
+    );
+
+  setEventos(eventosActualizados);
+
+  // Limpiar formulario
+  setNombre("");
+  setFecha("");
+  setLugar("");
+
+  setEditando(false);
+  setEventoEditando(null);
+};
 
   return (
     <div className="container mt-4">
@@ -73,13 +111,16 @@ function Eventos() {
         lugar={lugar}
         setLugar={setLugar}
         agregarEvento={agregarEvento}
-      />
+        actualizarEvento={actualizarEvento}
+        editando={editando}
+       />
 
       {/* Tabla */}
 
       <EventTable 
         eventos={eventos}
         eliminarEvento={eliminarEvento}
+        editarEvento={editarEvento}
       />
 
     </div>

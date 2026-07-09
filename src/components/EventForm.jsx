@@ -6,6 +6,8 @@ function EventForm({
   lugar,
   setLugar,
   agregarEvento,
+  actualizarEvento,
+  editando,
 }) {
   return (
     <div className="card mb-4">
@@ -56,9 +58,9 @@ function EventForm({
 
         <button
           className="btn btn-success"
-          onClick={agregarEvento}
+          onClick={editando ? actualizarEvento : agregarEvento}
         >
-          Agregar Evento
+          {editando ? "Guardar Cambios" : "Agregar Evento"}
         </button>
 
       </div>

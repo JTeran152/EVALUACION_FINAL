@@ -1,4 +1,4 @@
-function EventTable({ eventos, eliminarEvento }) {
+function EventTable({ eventos, eliminarEvento, editarEvento }) {
   return (
     <table className="table table-striped table-bordered">
 
@@ -22,7 +22,10 @@ function EventTable({ eventos, eliminarEvento }) {
             <td>{evento.lugar}</td>
 
             <td>
-              <button className="btn btn-warning btn-sm me-2">
+              <button
+                className="btn btn-warning btn-sm me-2"
+                onClick={() => editarEvento(evento)}
+              >
                 Editar
               </button>
 

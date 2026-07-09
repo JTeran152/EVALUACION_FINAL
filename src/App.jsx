@@ -1,14 +1,26 @@
-import './App.css';
+import "./App.css";
+
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+
+import Home from "./pages/Home";
+import Eventos from "./pages/Eventos";
+import Participantes from "./pages/Participantes";
+import Acerca from "./pages/Acerca";
 
 function App() {
   return (
-    <div>
-      <h1>Sistema de Gestión de Eventos Universitarios</h1>
+    <>
+      <Navbar />
 
-      <p>
-        Bienvenido a la plataforma para gestionar eventos académicos.
-      </p>
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/eventos" element={<Eventos />} />
+        <Route path="/participantes" element={<Participantes />} />
+        <Route path="/acerca" element={<Acerca />} />
+      </Routes>
+    </>
   );
 }
 

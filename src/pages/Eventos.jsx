@@ -26,6 +26,7 @@ function Eventos() {
   // Datos de edición
   const [editando, setEditando] = useState(false);
   const [eventoEditando, setEventoEditando] = useState(null);
+  const [busqueda, setBusqueda] = useState("");
 
   // Agregar un nuevo evento
   const agregarEvento = () => {
@@ -69,6 +70,11 @@ function Eventos() {
     setLugar(evento.lugar);
   };
   
+  //Buscar Evento
+  const eventosFiltrados = eventos.filter((evento) =>
+    evento.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
   //Actualizar Evento
   const actualizarEvento = () => {
 
@@ -116,9 +122,24 @@ function Eventos() {
        />
 
       {/* Tabla */}
+      <div className="mb-4">
+
+        <label className="form-label">
+          Buscar eventos
+        </label>
+
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Escribe el nombre del evento..."
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+        />
+
+      </div>
 
       <EventTable 
-        eventos={eventos}
+        eventos={eventosFiltrados}
         eliminarEvento={eliminarEvento}
         editarEvento={editarEvento}
       />

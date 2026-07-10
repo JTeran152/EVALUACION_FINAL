@@ -1,48 +1,40 @@
+import { useState, useEffect } from "react";
 import EventForm from "../components/EventForm";
 import EventTable from "../components/EventTable";
-import { useState, useEffect } from "react";
+
 import {
   obtenerEventos,
   crearEvento,
   actualizarEventoAPI,
-  eliminarEventoAPI
+  eliminarEventoAPI,
 } from "../services/eventService";
 
 function Eventos() {
-  // Lista inicial de eventos
-  const [eventos, setEventos] = useState([]);
-  useEffect(() => {
 
-    cargarEventos();
-
-  }, []);
-
-  const cargarEventos = async () => {
-
-    try {
-
-      const respuesta = await obtenerEventos();
-
-      setEventos(respuesta.data);
-
-    } catch (error) {
-
-      console.error("Error al cargar eventos:", error);
-
-    }
-
-  };
-
-  // Datos del formulario
   const [nombre, setNombre] = useState("");
   const [fecha, setFecha] = useState("");
   const [lugar, setLugar] = useState("");
-  // Datos de edición
+
   const [editando, setEditando] = useState(false);
   const [eventoEditando, setEventoEditando] = useState(null);
+
   const [busqueda, setBusqueda] = useState("");
 
-  // Agregar un nuevo evento
+  const [eventos, setEventos] = useState([]);
+
+  useEffect(() => {
+    cargarEventos();
+  }, []);
+
+  const cargarEventos = async () => {
+    try {
+      const respuesta = await obtenerEventos();
+      setEventos(respuesta.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const agregarEvento = async () => {
 
     if (!nombre || !fecha || !lugar) {
@@ -50,15 +42,13 @@ function Eventos() {
       return;
     }
 
-    const nuevoEvento = {
-      nombre,
-      fecha,
-      lugar,
-    };
-
     try {
 
-      await crearEvento(nuevoEvento);
+      await crearEvento({
+        nombre,
+        fecha,
+        lugar,
+      });
 
       cargarEventos();
 
@@ -68,13 +58,12 @@ function Eventos() {
 
     } catch (error) {
 
-      console.error("Error al crear evento:", error);
+      console.error(error);
 
     }
 
   };
 
-  // Eliminar un evento
   const eliminarEvento = async (id) => {
 
     try {
@@ -85,44 +74,33 @@ function Eventos() {
 
     } catch (error) {
 
-      console.error("Error al eliminar el evento:", error);
+      console.error(error);
 
     }
 
   };
-  
-  //Editar Evento
+
   const editarEvento = (evento) => {
-    setEditando(true);
-    setEventoEditando(evento);
 
     setNombre(evento.nombre);
     setFecha(evento.fecha);
     setLugar(evento.lugar);
+
+    setEventoEditando(evento);
+
+    setEditando(true);
+
   };
-  
-  //Buscar Evento
-  const eventosFiltrados = eventos.filter((evento) =>
-    evento.nombre.toLowerCase().includes(busqueda.toLowerCase())
-  );
 
-  //Actualizar Evento
   const actualizarEvento = async () => {
-
-    const eventoActualizado = {
-
-      nombre,
-      fecha,
-      lugar,
-
-    };
 
     try {
 
-      await actualizarEventoAPI(
-        eventoEditando.id,
-        eventoActualizado
-      );
+      await actualizarEventoAPI(eventoEditando.id, {
+        nombre,
+        fecha,
+        lugar,
+      });
 
       cargarEventos();
 
@@ -130,63 +108,128 @@ function Eventos() {
       setFecha("");
       setLugar("");
 
-      setEditando(false);
       setEventoEditando(null);
+
+      setEditando(false);
 
     } catch (error) {
 
-      console.error("Error al actualizar el evento:", error);
+      console.error(error);
 
     }
 
   };
 
-  return (
-    <div className="container mt-4">
+  const eventosFiltrados = eventos.filter((evento) =>
+    evento.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Gestión de Eventos</h2>
+  return (
+
+    <div className="container">
+
+      <div className="card p-4 mb-4">
+
+        <h2 className="text-dark mb-2">
+
+          📅 Gestión de Eventos
+
+        </h2>
+
+        <p className="text-secondary mb-0">
+
+          Administra todos los eventos registrados en el sistema.
+
+        </p>
+
       </div>
 
-      {/* Formulario */}
+      <div className="card p-4 mb-4">
 
-      <EventForm
-        nombre={nombre}
-        setNombre={setNombre}
-        fecha={fecha}
-        setFecha={setFecha}
-        lugar={lugar}
-        setLugar={setLugar}
-        agregarEvento={agregarEvento}
-        actualizarEvento={actualizarEvento}
-        editando={editando}
-       />
+        <h4 className="text-dark mb-3">
 
-      {/* Tabla */}
-      <div className="mb-4">
+          {editando ? "Editar Evento" : "Registrar Evento"}
 
-        <label className="form-label">
-          Buscar eventos
-        </label>
+        </h4>
 
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Escribe el nombre del evento..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
+        <EventForm
+
+          nombre={nombre}
+          setNombre={setNombre}
+
+          fecha={fecha}
+          setFecha={setFecha}
+
+          lugar={lugar}
+          setLugar={setLugar}
+
+          agregarEvento={agregarEvento}
+          actualizarEvento={actualizarEvento}
+
+          editando={editando}
+
         />
 
       </div>
 
-      <EventTable 
-        eventos={eventosFiltrados}
-        eliminarEvento={eliminarEvento}
-        editarEvento={editarEvento}
-      />
+      <div className="card p-4 mb-4">
+
+        <label className="form-label fw-semibold">
+
+          Buscar eventos
+
+        </label>
+
+        <div className="input-group">
+
+          <span className="input-group-text">
+
+            🔍
+
+          </span>
+
+          <input
+
+            type="text"
+
+            className="form-control"
+
+            placeholder="Buscar por nombre..."
+
+            value={busqueda}
+
+            onChange={(e) => setBusqueda(e.target.value)}
+
+          />
+
+        </div>
+
+      </div>
+
+      <div className="card p-4">
+
+        <h4 className="text-dark mb-4">
+
+          Eventos Registrados
+
+        </h4>
+
+        <EventTable
+
+          eventos={eventosFiltrados}
+
+          eliminarEvento={eliminarEvento}
+
+          editarEvento={editarEvento}
+
+        />
+
+      </div>
 
     </div>
+
   );
+
 }
 
 export default Eventos;

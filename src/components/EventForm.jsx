@@ -10,14 +10,21 @@ function EventForm({
   editando,
 }) {
   return (
-    <div className="card mb-4">
-      <div className="card-header">
-        Registrar Nuevo Evento
-      </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
 
-      <div className="card-body">
+        if (editando) {
+          actualizarEvento();
+        } else {
+          agregarEvento();
+        }
+      }}
+    >
+      <div className="row">
 
-        <div className="mb-3">
+        <div className="col-md-4 mb-3">
+
           <label className="form-label">
             Nombre del evento
           </label>
@@ -25,12 +32,15 @@ function EventForm({
           <input
             type="text"
             className="form-control"
+            placeholder="Ej. Conferencia de React"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
           />
+
         </div>
 
-        <div className="mb-3">
+        <div className="col-md-4 mb-3">
+
           <label className="form-label">
             Fecha
           </label>
@@ -41,9 +51,11 @@ function EventForm({
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
           />
+
         </div>
 
-        <div className="mb-3">
+        <div className="col-md-4 mb-3">
+
           <label className="form-label">
             Lugar
           </label>
@@ -51,20 +63,40 @@ function EventForm({
           <input
             type="text"
             className="form-control"
+            placeholder="Ej. Auditorio Principal"
             value={lugar}
             onChange={(e) => setLugar(e.target.value)}
           />
+
         </div>
 
+      </div>
+
+      <div className="text-end mt-3">
+
         <button
-          className="btn btn-success"
-          onClick={editando ? actualizarEvento : agregarEvento}
+          type="submit"
+          className={`btn ${
+            editando ? "btn-warning" : "btn-primary"
+          } px-4`}
         >
-          {editando ? "Guardar Cambios" : "Agregar Evento"}
+          <i
+            className={`bi ${
+              editando
+                ? "bi-pencil-square"
+                : "bi-plus-circle"
+            } me-2`}
+          ></i>
+
+          {editando
+            ? "Actualizar Evento"
+            : "Guardar Evento"}
+
         </button>
 
       </div>
-    </div>
+
+    </form>
   );
 }
 

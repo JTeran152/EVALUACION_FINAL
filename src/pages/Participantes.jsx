@@ -1,7 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ParticipantForm from "../components/ParticipantForm";
 import ParticipantTable from "../components/ParticipantTable";
 
+import {
+  obtenerParticipantes,
+  crearParticipante,
+  actualizarParticipanteAPI,
+  eliminarParticipanteAPI,
+} from "../services/participantService";
 
 function Participantes() {
   //Datos del formulario
@@ -15,82 +21,109 @@ function Participantes() {
 
   const [participantes, setParticipantes] = useState([]);
 
+  useEffect(() => {
+    cargarParticipantes();
+  }, []);
 
-  const agregarParticipante = () => {
+  const cargarParticipantes = async () => {
+    try {
+
+      const respuesta = await obtenerParticipantes();
+
+      setParticipantes(respuesta.data);
+
+    } catch (error) {
+
+      console.error("Error al cargar participantes:", error);
+
+    }
+  };
+
+  const agregarParticipante = async () => {
 
     if (!nombre || !correo || !carrera) {
       alert("Completa todos los campos.");
       return;
     }
-
-
+    
     const nuevoParticipante = {
-      id: participantes.length + 1,
       nombre,
       correo,
       carrera,
     };
 
+    try {
 
-    setParticipantes([
-      ...participantes,
-      nuevoParticipante
-    ]);
+      await crearParticipante(nuevoParticipante);
 
+      cargarParticipantes();
 
-    setNombre("");
-    setCorreo("");
-    setCarrera("");
+      setNombre("");
+      setCorreo("");
+      setCarrera("");
 
-  };
+    } catch (error) {
 
-  const eliminarParticipante = (id) => {
+      console.error("Error al crear participante:", error);
 
-    const participantesActualizados = participantes.filter(
-      (participante) => participante.id !== id
-    );
-
-    setParticipantes(participantesActualizados);
+    }
 
   };
   
   const editarParticipante = (participante) => {
-
-    setEditando(true);
-    setParticipanteEditando(participante);
-
     setNombre(participante.nombre);
     setCorreo(participante.correo);
     setCarrera(participante.carrera);
 
+    setParticipanteEditando(participante);
+    setEditando(true);
   };
 
-  const actualizarParticipante = () => {
+  const eliminarParticipante = async (id) => {
 
-    const participantesActualizados = participantes.map(
-      (participante) =>
-        participante.id === participanteEditando.id
-          ? {
-              ...participante,
-              nombre,
-              correo,
-              carrera,
-            }
-          : participante
-  );
+    try {
 
+      await eliminarParticipanteAPI(id);
 
-  setParticipantes(participantesActualizados);
+      cargarParticipantes();
 
+    } catch (error) {
 
-  // Limpiar formulario
+      console.error("Error al eliminar participante:", error);
 
-  setNombre("");
-  setCorreo("");
-  setCarrera("");
+    }
 
-  setEditando(false);
-  setParticipanteEditando(null);
+  };
+
+  const actualizarParticipante = async () => {
+
+    const participanteActualizado = {
+      nombre,
+      correo,
+      carrera,
+    };
+
+    try {
+
+      await actualizarParticipanteAPI(
+        participanteEditando.id,
+        participanteActualizado
+      );
+
+      cargarParticipantes();
+
+      setNombre("");
+      setCorreo("");
+      setCarrera("");
+
+      setEditando(false);
+      setParticipanteEditando(null);
+
+    } catch (error) {
+
+      console.error("Error al actualizar participante:", error);
+
+    }
 
   };
 

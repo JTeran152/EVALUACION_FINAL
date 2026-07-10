@@ -27,6 +27,10 @@ function Navbar() {
             Acerca
           </Link>
 
+          <Link as={Link} to="/inscripciones">
+            Inscripciones
+          </Link>
+
         </div>
       </div>
     </nav>

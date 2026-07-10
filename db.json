@@ -33,6 +33,12 @@
       "carrera": "Administración"
     }
   ],
-  "inscripciones": [],
+  "inscripciones": [
+    {
+      "eventoId": "1",
+      "participanteId": "1",
+      "id": "MTNvLOexOMo"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

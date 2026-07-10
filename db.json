@@ -1,0 +1,38 @@
+{
+  "eventos": [
+    {
+      "id": "1",
+      "nombre": "Conferencia React",
+      "fecha": "2026-07-20",
+      "lugar": "Auditorio Principal"
+    },
+    {
+      "id": "2",
+      "nombre": "Taller de Inteligencia Artificial",
+      "fecha": "2026-07-25",
+      "lugar": "Laboratorio 2"
+    },
+    {
+      "nombre": "Curso Docker",
+      "fecha": "2026-08-10",
+      "lugar": "Laboratorio 5",
+      "id": "CmupV-l1-Ys"
+    }
+  ],
+  "participantes": [
+    {
+      "id": "1",
+      "nombre": "Ana López",
+      "correo": "ana@correo.com",
+      "carrera": "Ingeniería de Sistemas"
+    },
+    {
+      "id": "2",
+      "nombre": "Carlos Pérez",
+      "correo": "carlos@correo.com",
+      "carrera": "Administración"
+    }
+  ],
+  "inscripciones": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}

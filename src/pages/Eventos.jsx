@@ -1,23 +1,37 @@
 import EventForm from "../components/EventForm";
 import EventTable from "../components/EventTable";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  obtenerEventos,
+  crearEvento,
+  actualizarEventoAPI,
+  eliminarEventoAPI
+} from "../services/eventService";
 
 function Eventos() {
   // Lista inicial de eventos
-  const [eventos, setEventos] = useState([
-    {
-      id: 1,
-      nombre: "Conferencia React",
-      fecha: "20/07/2026",
-      lugar: "Auditorio A",
-    },
-    {
-      id: 2,
-      nombre: "Taller de Inteligencia Artificial",
-      fecha: "25/07/2026",
-      lugar: "Laboratorio 3",
-    },
-  ]);
+  const [eventos, setEventos] = useState([]);
+  useEffect(() => {
+
+    cargarEventos();
+
+  }, []);
+
+  const cargarEventos = async () => {
+
+    try {
+
+      const respuesta = await obtenerEventos();
+
+      setEventos(respuesta.data);
+
+    } catch (error) {
+
+      console.error("Error al cargar eventos:", error);
+
+    }
+
+  };
 
   // Datos del formulario
   const [nombre, setNombre] = useState("");
@@ -29,35 +43,52 @@ function Eventos() {
   const [busqueda, setBusqueda] = useState("");
 
   // Agregar un nuevo evento
-  const agregarEvento = () => {
-    // Validación sencilla
+  const agregarEvento = async () => {
+
     if (!nombre || !fecha || !lugar) {
       alert("Completa todos los campos.");
       return;
     }
 
     const nuevoEvento = {
-      id: eventos.length + 1,
       nombre,
       fecha,
       lugar,
     };
 
-    setEventos([...eventos, nuevoEvento]);
+    try {
 
-    // Limpiar formulario
-    setNombre("");
-    setFecha("");
-    setLugar("");
+      await crearEvento(nuevoEvento);
+
+      cargarEventos();
+
+      setNombre("");
+      setFecha("");
+      setLugar("");
+
+    } catch (error) {
+
+      console.error("Error al crear evento:", error);
+
+    }
+
   };
 
   // Eliminar un evento
-  const eliminarEvento = (id) => {
-    const eventosActualizados = eventos.filter(
-      (evento) => evento.id !== id
-    );
+  const eliminarEvento = async (id) => {
 
-    setEventos(eventosActualizados);
+    try {
+
+      await eliminarEventoAPI(id);
+
+      cargarEventos();
+
+    } catch (error) {
+
+      console.error("Error al eliminar el evento:", error);
+
+    }
+
   };
   
   //Editar Evento
@@ -76,29 +107,39 @@ function Eventos() {
   );
 
   //Actualizar Evento
-  const actualizarEvento = () => {
+  const actualizarEvento = async () => {
 
-    const eventosActualizados = eventos.map((evento) =>
-      evento.id === eventoEditando.id
-        ? {
-            ...evento,
-            nombre,
-            fecha,
-            lugar,
-          }
-        : evento
-    );
+    const eventoActualizado = {
 
-  setEventos(eventosActualizados);
+      nombre,
+      fecha,
+      lugar,
 
-  // Limpiar formulario
-  setNombre("");
-  setFecha("");
-  setLugar("");
+    };
 
-  setEditando(false);
-  setEventoEditando(null);
-};
+    try {
+
+      await actualizarEventoAPI(
+        eventoEditando.id,
+        eventoActualizado
+      );
+
+      cargarEventos();
+
+      setNombre("");
+      setFecha("");
+      setLugar("");
+
+      setEditando(false);
+      setEventoEditando(null);
+
+    } catch (error) {
+
+      console.error("Error al actualizar el evento:", error);
+
+    }
+
+  };
 
   return (
     <div className="container mt-4">

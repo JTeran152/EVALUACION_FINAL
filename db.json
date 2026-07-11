@@ -1,10 +1,10 @@
 {
   "eventos": [
     {
-      "id": "1",
       "nombre": "Conferencia React",
       "fecha": "2026-07-20",
-      "lugar": "Auditorio Principal"
+      "lugar": "Auditorio Principal",
+      "id": "1"
     },
     {
       "id": "2",
@@ -15,14 +15,20 @@
     {
       "nombre": "Curso Docker",
       "fecha": "2026-08-10",
-      "lugar": "Laboratorio 5",
+      "lugar": "Laboratorio 4",
       "id": "CmupV-l1-Ys"
     },
     {
       "nombre": "Ciberseguridad",
-      "fecha": "2026-12-14",
-      "lugar": "Salón C",
-      "id": "Mz-5t6vlCi4"
+      "fecha": "2026-09-14",
+      "lugar": "Salón A",
+      "id": "b_NS8B1gFBg"
+    },
+    {
+      "nombre": "Seminario",
+      "fecha": "2026-05-15",
+      "lugar": "Auditorio Central",
+      "id": "tRv5gsRsWOo"
     }
   ],
   "participantes": [
@@ -48,8 +54,8 @@
   "inscripciones": [
     {
       "eventoId": "1",
-      "participanteId": "1",
-      "id": "MTNvLOexOMo"
+      "participanteId": "Lha2kJQeOhY",
+      "id": "PAbm1aqTKNY"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

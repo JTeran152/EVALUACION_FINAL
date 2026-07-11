@@ -11,6 +11,6 @@ export const crearInscripcion = (inscripcion) => {
 };
 
 // Eliminar inscripción
-export const eliminarInscripcion = (id) => {
+export const eliminarInscripcionAPI = (id) => {
   return api.delete(`/inscripciones/${id}`);
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import EventForm from "../components/EventForm";
 import EventTable from "../components/EventTable";
-
+import Swal from "sweetalert2";
 import {
   obtenerEventos,
   crearEvento,
@@ -38,8 +38,16 @@ function Eventos() {
   const agregarEvento = async () => {
 
     if (!nombre || !fecha || !lugar) {
-      alert("Completa todos los campos.");
+
+      Swal.fire({
+        icon: "warning",
+        title: "Campos incompletos",
+        text: "Complete todos los campos antes de continuar.",
+        confirmButtonColor: "#2563eb",
+      });
+
       return;
+
     }
 
     try {
@@ -50,7 +58,7 @@ function Eventos() {
         lugar,
       });
 
-      cargarEventos();
+      await cargarEventos();
 
       setNombre("");
       setFecha("");
@@ -61,34 +69,57 @@ function Eventos() {
       console.error(error);
 
     }
-
+    
+    Swal.fire({
+      icon: "success",
+      title: "Evento registrado",
+      text: "El evento fue registrado correctamente.",
+      timer: 1800,
+      showConfirmButton: false,
+    });
   };
 
   const eliminarEvento = async (id) => {
+
+    const resultado = await Swal.fire({
+      title: "¿Eliminar evento?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#dc3545",
+      cancelButtonColor: "#6c757d",
+    });
+
+    if (!resultado.isConfirmed) {
+      return;
+    }
 
     try {
 
       await eliminarEventoAPI(id);
 
-      cargarEventos();
+      await cargarEventos();
+
+      Swal.fire({
+        icon: "success",
+        title: "Evento eliminado",
+        timer: 1500,
+        showConfirmButton: false,
+      });
 
     } catch (error) {
 
       console.error(error);
 
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo eliminar el evento.",
+      });
+
     }
-
-  };
-
-  const editarEvento = (evento) => {
-
-    setNombre(evento.nombre);
-    setFecha(evento.fecha);
-    setLugar(evento.lugar);
-
-    setEventoEditando(evento);
-
-    setEditando(true);
 
   };
 
@@ -102,7 +133,7 @@ function Eventos() {
         lugar,
       });
 
-      cargarEventos();
+      await cargarEventos();
 
       setNombre("");
       setFecha("");
@@ -117,6 +148,23 @@ function Eventos() {
       console.error(error);
 
     }
+
+    Swal.fire({
+      icon: "success",
+      title: "Evento actualizado",
+      text: "Los cambios se guardaron correctamente.",
+      timer: 1800,
+      showConfirmButton: false,
+    });
+  };
+
+  const editarEvento = (evento) => {
+
+    setNombre(evento.nombre);
+    setFecha(evento.fecha);
+    setLugar(evento.lugar);
+    setEventoEditando(evento);
+    setEditando(true);
 
   };
 

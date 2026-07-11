@@ -5,7 +5,7 @@ import { obtenerParticipantes } from "../services/participantService";
 import {
   obtenerInscripciones,
   crearInscripcion,
-  eliminarInscripcion
+  eliminarInscripcionAPI
 } from "../services/inscriptionService";
 
 function Inscripciones() {
@@ -53,6 +53,20 @@ const registrarInscripcion = async () => {
     return;
 
   }
+//Inscripción Doble
+  const yaExiste = inscripciones.some(
+    (inscripcion) =>
+      inscripcion.eventoId === eventoId &&
+      inscripcion.participanteId === participanteId
+  );
+
+  if (yaExiste) {
+
+    alert("Este participante ya está inscrito en ese evento.");
+
+    return;
+
+  }
 
   const nuevaInscripcion = {
 
@@ -83,11 +97,11 @@ const registrarInscripcion = async () => {
 };
 
 //Eliminar Registro
-const eliminarRegistro = async (id) => {
+const eliminarInscripcion = async (id) => {
 
   try {
 
-    await eliminarInscripcion(id);
+    await eliminarInscripcionAPI(id);
     await cargarDatos();
 
   } catch (error) {
@@ -103,11 +117,30 @@ const eliminarRegistro = async (id) => {
 
   return (
 
-    <div className="container mt-4">
+  <div className="container">
 
-      <h2>Gestión de Inscripciones</h2>
+    <div className="card p-4 mb-4">
+
+      <h2 className="text-dark mb-2">
+        📝 Gestión de Inscripciones
+      </h2>
+
+      <p className="text-secondary mb-0">
+        Administra las inscripciones de participantes a los eventos.
+      </p>
+
+    </div>
+
+    <div className="card p-4 mb-4">
+
+      <h4 className="text-dark mb-3">
+
+        Registrar Inscripción
+
+      </h4>
 
       <InscriptionForm
+
         eventos={eventos}
         participantes={participantes}
 
@@ -120,69 +153,125 @@ const eliminarRegistro = async (id) => {
         registrarInscripcion={registrarInscripcion}
 
       />
-      
-      <table className="table mt-4">
 
-      <thead>
-
-      <tr>
-      <th>Evento</th>
-      <th>Participante</th>
-      <th>Acción</th>
-      </tr>
-
-      </thead>
-
-
-      <tbody>
-
-      {inscripciones.map((inscripcion) => {
-
-        const evento = eventos.find(
-          (e) => e.id === inscripcion.eventoId
-        );
-
-
-       const participante = participantes.find(
-         (p) => p.id === inscripcion.participanteId
-        );
-
-
-    return (
-
-      <tr key={inscripcion.id}>
-
-        <td>
-          {evento?.nombre}
-        </td>
-
-        <td>
-          {participante?.nombre}
-        </td>
-
-        <td>
-
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={() => eliminarRegistro(inscripcion.id)}
-        >
-          Eliminar
-        </button>
-
-        </td>
-
-      </tr>
-
-    );
-
-})}
-
-</tbody>
-
-</table>
     </div>
 
-  );
+    <div className="card p-4">
+
+      <h4 className="text-dark mb-4">
+
+        Inscripciones Registradas
+
+      </h4>
+
+      <table className="table align-middle">
+
+        <thead>
+
+          <tr>
+
+            <th>Evento</th>
+
+            <th>Participante</th>
+
+            <th className="text-center">
+              Acciones
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {inscripciones.length === 0 ? (
+
+            <tr>
+
+              <td
+                colSpan="3"
+                className="text-center py-5 text-secondary"
+              >
+
+                <i
+                  className="bi bi-journal-x d-block mb-3"
+                  style={{
+                    fontSize: "3rem",
+                    color: "#94a3b8",
+                  }}
+                ></i>
+
+                No existen inscripciones registradas.
+
+              </td>
+
+            </tr>
+
+          ) : (
+
+            inscripciones.map((inscripcion) => {
+
+              const evento = eventos.find(
+                (e) => e.id === inscripcion.eventoId
+              );
+
+              const participante = participantes.find(
+                (p) => p.id === inscripcion.participanteId
+              );
+
+              return (
+
+                <tr key={inscripcion.id}>
+
+                  <td>
+
+                    <strong>
+
+                      {evento?.nombre}
+
+                    </strong>
+
+                  </td>
+
+                  <td>
+
+                    {participante?.nombre}
+
+                  </td>
+
+                  <td className="text-center">
+
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() =>
+                        eliminarInscripcion(inscripcion.id)
+                      }
+                      title="Eliminar"
+                    >
+
+                      <i className="bi bi-trash"></i>
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              );
+
+            })
+
+          )}
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+);
 }
 
 export default Inscripciones;

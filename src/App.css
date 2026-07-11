@@ -470,3 +470,58 @@ footer{
     font-size: 1rem;
 
 }
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 768px) {
+
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .card {
+    padding: 1.2rem !important;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    text-align: center;
+  }
+
+  h4 {
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+
+  footer h4 {
+    font-size: 1.4rem;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    border-radius: 16px;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+}

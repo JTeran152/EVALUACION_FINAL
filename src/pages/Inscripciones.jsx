@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import InscriptionForm from "../components/InscriptionForm";
 import { obtenerEventos } from "../services/eventService";
 import { obtenerParticipantes } from "../services/participantService";
+import Swal from "sweetalert2";
 import {
   obtenerInscripciones,
   crearInscripcion,
@@ -48,7 +49,12 @@ const registrarInscripcion = async () => {
 
   if (!eventoId || !participanteId) {
 
-    alert("Seleccione un evento y un participante.");
+    Swal.fire({
+      icon: "warning",
+      title: "Campos incompletos",
+      text: "Seleccione un evento y un participante.",
+      confirmButtonColor: "#2563eb",
+    });
 
     return;
 
@@ -62,7 +68,12 @@ const registrarInscripcion = async () => {
 
   if (yaExiste) {
 
-    alert("Este participante ya está inscrito en ese evento.");
+    Swal.fire({
+      icon: "info",
+      title: "Inscripción existente",
+      text: "Este participante ya está inscrito en el evento seleccionado.",
+      confirmButtonColor: "#2563eb",
+    });
 
     return;
 
@@ -80,7 +91,13 @@ const registrarInscripcion = async () => {
     await crearInscripcion(nuevaInscripcion);
     await cargarDatos();
 
-    alert("Inscripción registrada correctamente.");
+    Swal.fire({
+      icon: "success",
+      title: "Inscripción registrada",
+      text: "La inscripción se registró correctamente.",
+      timer: 1800,
+      showConfirmButton: false,
+    });
 
     setEventoId("");
     setParticipanteId("");
@@ -98,18 +115,39 @@ const registrarInscripcion = async () => {
 
 //Eliminar Registro
 const eliminarInscripcion = async (id) => {
+  const resultado = await Swal.fire({
+    title: "¿Eliminar inscripción?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    confirmButtonColor: "#dc3545",
+    cancelButtonColor: "#6c757d",
+  });
+
+if (!resultado.isConfirmed) return;
 
   try {
 
     await eliminarInscripcionAPI(id);
     await cargarDatos();
 
+    Swal.fire({
+      icon: "success",
+      title: "Inscripción eliminada",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
   } catch (error) {
 
-    console.error(
-      "Error al eliminar inscripción:",
-      error
-    );
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Ocurrió un problema al procesar la solicitud.",
+      confirmButtonColor: "#dc3545",
+    });
 
   }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ParticipantForm from "../components/ParticipantForm";
 import ParticipantTable from "../components/ParticipantTable";
-
+import Swal from "sweetalert2";
 import {
   obtenerParticipantes,
   crearParticipante,
@@ -42,7 +42,12 @@ function Participantes() {
   const agregarParticipante = async () => {
 
     if (!nombre || !correo || !carrera) {
-      alert("Completa todos los campos.");
+      Swal.fire({
+              icon: "warning",
+              title: "Campos incompletos",
+              text: "Complete todos los campos antes de continuar.",
+              confirmButtonColor: "#2563eb",
+            });
       return;
     }
     
@@ -51,6 +56,14 @@ function Participantes() {
       correo,
       carrera,
     };
+
+    Swal.fire({
+          icon: "success",
+          title: "Participante registrado",
+          text: "El participante fue registrado correctamente.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
     try {
 
@@ -81,15 +94,38 @@ function Participantes() {
 
   const eliminarParticipante = async (id) => {
 
+    const resultado = await Swal.fire({
+        title: "¿Eliminar participante?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d",
+      });
+
+      if (!resultado.isConfirmed) return;
     try {
 
       await eliminarParticipanteAPI(id);
+      await cargarParticipantes();
 
-      cargarParticipantes();
+      Swal.fire({
+            icon: "success",
+            title: "Participante eliminado",
+            timer: 1500,
+            showConfirmButton: false,
+          });
 
     } catch (error) {
 
-      console.error("Error al eliminar participante:", error);
+      Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo eliminar el participante.",
+            confirmButtonColor: "#dc3545",
+          });
 
     }
 
@@ -110,7 +146,7 @@ function Participantes() {
         participanteActualizado
       );
 
-      cargarParticipantes();
+      await cargarParticipantes();
 
       setNombre("");
       setCorreo("");
@@ -124,6 +160,14 @@ function Participantes() {
       console.error("Error al actualizar participante:", error);
 
     }
+    
+    Swal.fire({
+          icon: "success",
+          title: "Participante actualizado",
+          text: "Los cambios se guardaron correctamente.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
   };
 

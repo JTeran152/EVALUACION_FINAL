@@ -33,29 +33,28 @@
   ],
   "participantes": [
     {
-      "id": "1",
       "nombre": "Ana López",
       "correo": "ana@correo.com",
-      "carrera": "Ingeniería de Sistemas"
+      "carrera": "Ingeniería de Sistemas",
+      "id": "1"
     },
     {
       "id": "2",
       "nombre": "Carlos Pérez",
       "correo": "carlos@correo.com",
       "carrera": "Administración"
-    },
-    {
-      "nombre": "María Torres",
-      "correo": "maria@gmail.com",
-      "carrera": "Derecho",
-      "id": "Lha2kJQeOhY"
     }
   ],
   "inscripciones": [
     {
-      "eventoId": "1",
-      "participanteId": "Lha2kJQeOhY",
-      "id": "PAbm1aqTKNY"
+      "eventoId": "CmupV-l1-Ys",
+      "participanteId": "2",
+      "id": "xDw3z-g_UGU"
+    },
+    {
+      "eventoId": "CmupV-l1-Ys",
+      "participanteId": "1",
+      "id": "i3frySfZf-I"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

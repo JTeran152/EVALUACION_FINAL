@@ -10,15 +10,20 @@ function ParticipantForm({
   editando,
 }) {
   return (
-    <div className="card mb-4">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
 
-      <div className="card-header">
-        Registrar Participante
-      </div>
+        if (editando) {
+          actualizarParticipante();
+        } else {
+          agregarParticipante();
+        }
+      }}
+    >
+      <div className="row">
 
-      <div className="card-body">
-
-        <div className="mb-3">
+        <div className="col-md-4 mb-3">
 
           <label className="form-label">
             Nombre completo
@@ -27,14 +32,14 @@ function ParticipantForm({
           <input
             type="text"
             className="form-control"
+            placeholder="Ej. Juan Pérez"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
           />
 
         </div>
 
-
-        <div className="mb-3">
+        <div className="col-md-4 mb-3">
 
           <label className="form-label">
             Correo electrónico
@@ -43,14 +48,14 @@ function ParticipantForm({
           <input
             type="email"
             className="form-control"
+            placeholder="correo@ejemplo.com"
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
           />
 
         </div>
 
-
-        <div className="mb-3">
+        <div className="col-md-4 mb-3">
 
           <label className="form-label">
             Carrera
@@ -59,32 +64,40 @@ function ParticipantForm({
           <input
             type="text"
             className="form-control"
+            placeholder="Ej. Ingeniería de Sistemas"
             value={carrera}
             onChange={(e) => setCarrera(e.target.value)}
           />
 
         </div>
 
+      </div>
+
+      <div className="text-end mt-3">
 
         <button
-          className="btn btn-success"
-          onClick={
-            editando
-              ? actualizarParticipante
-              : agregarParticipante
-          }
+          type="submit"
+          className={`btn ${
+            editando ? "btn-warning" : "btn-primary"
+          } px-4`}
         >
-          {
-            editando
-              ? "Guardar Cambios"
-              : "Registrar Participante"
-          }
-        </button>
+          <i
+            className={`bi ${
+              editando
+                ? "bi-pencil-square"
+                : "bi-person-plus"
+            } me-2`}
+          ></i>
 
+          {editando
+            ? "Actualizar Participante"
+            : "Guardar Participante"}
+
+        </button>
 
       </div>
 
-    </div>
+    </form>
   );
 }
 

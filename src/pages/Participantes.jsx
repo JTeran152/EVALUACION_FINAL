@@ -129,12 +129,29 @@ function Participantes() {
 
   return (
 
-    <div className="container mt-4">
+    <div className="container">
 
-      <h2>
-        Gestión de Participantes
-      </h2>
+      <div className="card p-4 mb-4">
 
+        <h2 className="text-dark mb-2">
+          👥 Gestión de Participantes
+        </h2>
+
+        <p className="text-secondary mb-0">
+          Administra los participantes registrados en el sistema.
+        </p>
+
+      </div>
+
+      <div className="card p-4 mb-4">
+
+        <h4 className="text-dark mb-3">
+
+          {editando
+            ? "Editar Participante"
+            : "Registrar Participante"}
+
+        </h4>
 
       <ParticipantForm
 
@@ -148,16 +165,34 @@ function Participantes() {
         setCarrera={setCarrera}
 
         agregarParticipante={agregarParticipante}
+
         actualizarParticipante={actualizarParticipante}
+
         editando={editando}
 
       />
 
+    </div>
+
+    <div className="card p-4">
+
+      <h4 className="text-dark mb-4">
+
+        Participantes Registrados
+
+      </h4>
+
       <ParticipantTable
+
         participantes={participantes}
+
         eliminarParticipante={eliminarParticipante}
+
         editarParticipante={editarParticipante}
+
       />
+
+    </div>
 
     </div>
 

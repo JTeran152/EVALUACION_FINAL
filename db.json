@@ -17,6 +17,12 @@
       "fecha": "2026-08-10",
       "lugar": "Laboratorio 5",
       "id": "CmupV-l1-Ys"
+    },
+    {
+      "nombre": "Ciberseguridad",
+      "fecha": "2026-12-14",
+      "lugar": "Salón C",
+      "id": "Mz-5t6vlCi4"
     }
   ],
   "participantes": [
@@ -31,6 +37,12 @@
       "nombre": "Carlos Pérez",
       "correo": "carlos@correo.com",
       "carrera": "Administración"
+    },
+    {
+      "nombre": "María Torres",
+      "correo": "maria@gmail.com",
+      "carrera": "Derecho",
+      "id": "Lha2kJQeOhY"
     }
   ],
   "inscripciones": [

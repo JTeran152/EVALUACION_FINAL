@@ -1,61 +1,133 @@
 function ParticipantTable({
   participantes,
   eliminarParticipante,
-  editarParticipante
+  editarParticipante,
 }) {
+
+  if (participantes.length === 0) {
+
+    return (
+
+      <div className="text-center py-5">
+
+        <i
+          className="bi bi-people"
+          style={{
+            fontSize: "4rem",
+            color: "#94a3b8",
+          }}
+        ></i>
+
+        <h4 className="mt-3 text-dark">
+
+          No hay participantes registrados
+
+        </h4>
+
+        <p className="text-secondary mb-0">
+
+          Registra un participante utilizando el formulario superior.
+
+        </p>
+
+      </div>
+
+    );
+
+  }
+
   return (
-    <table className="table table-striped table-bordered">
 
-      <thead className="table-primary">
+    <div className="table-responsive">
 
-        <tr>
-          <th>Nombre</th>
-          <th>Correo</th>
-          <th>Carrera</th>
-          <th>Acciones</th>
-        </tr>
+      <table className="table align-middle">
 
-      </thead>
+        <thead>
 
+          <tr>
 
-      <tbody>
+            <th>Nombre</th>
 
-        {participantes.map((participante) => (
+            <th>Correo</th>
 
-          <tr key={participante.id}>
+            <th>Carrera</th>
 
-            <td>{participante.nombre}</td>
+            <th className="text-center">
 
-            <td>{participante.correo}</td>
+              Acciones
 
-            <td>{participante.carrera}</td>
-
-            <td>
-              <button
-                className="btn btn-warning btn-sm me-2"
-                onClick={() => editarParticipante(participante)}
-              >
-                Editar
-              </button>
-
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => eliminarParticipante(participante.id)}
-              >
-                Eliminar
-              </button>
-
-            </td>
+            </th>
 
           </tr>
 
-        ))}
+        </thead>
 
-      </tbody>
+        <tbody>
 
+          {participantes.map((participante) => (
 
-    </table>
+            <tr key={participante.id}>
+
+              <td>
+
+                <strong>
+
+                  {participante.nombre}
+
+                </strong>
+
+              </td>
+
+              <td>
+
+                {participante.correo}
+
+              </td>
+
+              <td>
+
+                {participante.carrera}
+
+              </td>
+
+              <td className="text-center">
+
+                <button
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => editarParticipante(participante)}
+                  title="Editar"
+                >
+
+                  <i className="bi bi-pencil-square"></i>
+
+                </button>
+
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() =>
+                    eliminarParticipante(participante.id)
+                  }
+                  title="Eliminar"
+                >
+
+                  <i className="bi bi-trash"></i>
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
+
+    </div>
+
   );
+
 }
 
 export default ParticipantTable;
